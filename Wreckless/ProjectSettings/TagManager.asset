@@ -47,5 +47,8 @@ TagManager:
   - name: Interactable
     uniqueID: 4035596345
     locked: 0
+  - name: Canvas
+    uniqueID: 203114673
+    locked: 0
   m_RenderingLayers:
   - Default
