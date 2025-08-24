@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
+    AudioSource myAudio;
+    [SerializeField] Slider volumeSlider;
     void ManageSingleton()
     {
-        int instance = FindObjectsOfType<AudioManager>().Length;
+        int instance = FindObjectsByType<AudioManager>(FindObjectsSortMode.None).Length;
         if(instance > 1)
         {
             Destroy(gameObject);
@@ -17,6 +20,12 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
+        myAudio = GetComponent<AudioSource>();
         ManageSingleton();
+    }
+
+    public void SetMusicVolume()
+    {
+        myAudio.volume = volumeSlider.value;
     }
 }
