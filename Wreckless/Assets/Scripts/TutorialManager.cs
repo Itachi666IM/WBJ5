@@ -22,6 +22,7 @@ public class TutorialManager : MonoBehaviour
 
     IEnumerator WriteSentence()
     {
+        instructionText.text = "";
         foreach(char c in currentInstruction.ToCharArray())
         {
             instructionText.text += c;
@@ -35,6 +36,7 @@ public class TutorialManager : MonoBehaviour
     {
         if(index < instructions.Length-1)
         {
+            nextButton.SetActive(false);
             index++;
             currentInstruction = instructions[index];
             instructionText.text = "";

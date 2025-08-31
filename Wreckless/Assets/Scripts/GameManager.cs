@@ -10,12 +10,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] TMP_Text targetScoreText;
     [SerializeField] TMP_Text forceText;
     [SerializeField] TMP_Text massText;
-    [SerializeField] TMP_Text chainText;
 
     public List<string> availableUpgrades;
-    List<string> copyList;
 
-    [SerializeField] GameObject[] towerPrefabs;
+    [SerializeField] GameObject towerPrefab;
     [SerializeField] Transform spawnPos;
 
     [SerializeField] float delayTime;
@@ -23,35 +21,38 @@ public class GameManager : MonoBehaviour
     WBall wreckingBall;
     bool hasUsed = false;
 
-    float forceAmount;
-    float massAmount;
-    float chainAmount;
+    int forceAmount = 1500;
+    int massAmount = 5;
     int score;
     private int requiredTarget = 50;
 
     [SerializeField] GameObject scoreCalculator;
     [SerializeField] Transform scoreCalculatorPos;
+
+    bool hasPressed;
+    float timeToReachTarget;
     private void Awake()
     {
         targetScoreText.text = "Target - 0/" + requiredTarget;
-        copyList = availableUpgrades;
+
         wreckingBall = FindAnyObjectByType<WBall>();
-        Instantiate(scoreCalculator, scoreCalculatorPos);
+        Instantiate(scoreCalculator, scoreCalculatorPos.transform);
+        Instantiate(towerPrefab, spawnPos.transform);
     }
+
+   
 
     void EnableUpgradeImageObjects()
     {
         foreach(var upgradeObject in upgradeObjects)
         {
-            int index = Random.Range(0,copyList.Count);
-            upgradeObject.text = copyList[index];
-            copyList.Remove(upgradeObject.text);
+            int index = Random.Range(0,availableUpgrades.Count);
+            upgradeObject.text = availableUpgrades[index];
         }
         foreach(var upgradeImage in upgradeImages)
         {
             upgradeImage.SetActive(true);
         }
-        copyList = availableUpgrades;
     }
 
     void DisableUpgradeImageObjects()
@@ -69,18 +70,14 @@ public class GameManager : MonoBehaviour
         DisableUpgradeImageObjects();
         requiredTarget += 10;
         targetScoreText.text = "Target - 0/" + requiredTarget;
-        Instantiate(scoreCalculator, scoreCalculatorPos);
-        int index = Random.Range(0,towerPrefabs.Length);
-        GameObject towerToSetNext = towerPrefabs[index];
-        if(towerToSetNext != null)
-        {
-            Instantiate(towerToSetNext,spawnPos.transform);
-        }
+        Instantiate(scoreCalculator, scoreCalculatorPos.transform);
+        Instantiate(towerPrefab,spawnPos.transform);
     }
 
     public void HasUsedWreckingBall()
     {
         hasUsed = true;
+        hasPressed = false;
         wreckButton.SetActive(false);
         if(score<requiredTarget)
         {
@@ -114,9 +111,69 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        forceText.text = "Force - " + forceAmount;
+        massText.text = "Mass - " + massAmount;
+        if(hasPressed)
+        {
+            timeToReachTarget += Time.time;
+        }
+        else
+        {
+            timeToReachTarget = 0;
+        }
+
+        if(requiredTarget == 350)
+        {
+            SceneManager.LoadScene("Win");
+        }
+    }
+    public void HasPressedWreckButton()
+    {
+        hasPressed = true;
+    }
+
     public void CalculateScore()
     {
-        score = (int)(Mathf.Sqrt(Mathf.Pow(wreckingBall.rb.linearVelocity.magnitude,2) + Mathf.Pow(wreckingBall.rb.angularVelocity,2)));
+        int velocityAtImpact = (int)Mathf.Sqrt(Mathf.Pow(wreckingBall.rb.linearVelocity.magnitude, 2) + Mathf.Pow(wreckingBall.rb.angularVelocity, 2));
+        int momentumAtImpact = massAmount * velocityAtImpact;
+        float averageForce = 2*momentumAtImpact/timeToReachTarget;
+        Debug.Log(averageForce);
+        score =(int)(averageForce * 1000) + forceAmount/massAmount;
         targetScoreText.text = "Target - " + score.ToString() + "/" + requiredTarget;
+    }
+
+    public void ForceAdd()
+    {
+        forceAmount += 100;
+        wreckingBall.forceAmount = forceAmount;
+    }
+
+    public void ForceRemove()
+    {
+        if(forceAmount>100)
+        {
+            forceAmount -= 100;
+        }
+        else
+        {
+            forceAmount = 0;
+        }
+        wreckingBall.forceAmount = forceAmount;
+    }
+
+    public void MassAdd()
+    {
+        massAmount += 5;
+        wreckingBall.rb.mass = massAmount;
+    }
+
+    public void MassRemove()
+    {
+        if(massAmount>5)
+        {
+            massAmount -= 5;
+        }
     }
 }
