@@ -34,6 +34,7 @@ public class StoryManager : MonoBehaviour
 
     IEnumerator WriteSentence()
     {
+        storyText.text = "";
         foreach(char c in currentDialogue.ToCharArray())
         {
             storyText.text += c;
