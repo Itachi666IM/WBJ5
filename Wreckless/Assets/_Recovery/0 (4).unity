@@ -909,7 +909,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 800, y: 100}
+  m_SizeDelta: {x: 400, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &313229170
 MonoBehaviour:
@@ -1316,7 +1316,7 @@ GameObject:
   - component: {fileID: 500376040}
   m_Layer: 0
   m_Name: Wrecking Ball
-  m_TagString: Ball
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2133,7 +2133,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -259370951
   m_SortingLayer: 3
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 432f82ba0a06e7844a16ef0b13952fc0, type: 3}
   m_Color: {r: 0.2679245, g: 0.116774626, b: 0.116774626, a: 1}
   m_FlipX: 0
@@ -2255,7 +2255,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Chains - 5
+  m_text: Chains - 4
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2876,37 +2876,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2125531891}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1415796180
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1415796181}
-  m_Layer: 0
-  m_Name: ScoreCalculatorPos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1415796181
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1415796180}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.9, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1516257073
 GameObject:
@@ -3765,8 +3734,6 @@ MonoBehaviour:
   - {fileID: 3447138450572134569, guid: 8a04b30cf2eea8844a88eb26b3d4049f, type: 3}
   spawnPos: {fileID: 225752766}
   delayTime: 6
-  scoreCalculator: {fileID: 5839369527501276644, guid: 7f1939f0369c7af488cfd7dcedd3309e, type: 3}
-  scoreCalculatorPos: {fileID: 1415796181}
 --- !u!4 &1813815166
 Transform:
   m_ObjectHideFlags: 0
@@ -4794,4 +4761,3 @@ SceneRoots:
   - {fileID: 1813815166}
   - {fileID: 9220290468769271527}
   - {fileID: 225752766}
-  - {fileID: 1415796181}
