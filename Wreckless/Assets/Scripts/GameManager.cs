@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
-
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject[] upgradeImages;
@@ -22,10 +22,21 @@ public class GameManager : MonoBehaviour
 
     WBall wreckingBall;
     bool hasUsed = false;
+
+    float forceAmount;
+    float massAmount;
+    float chainAmount;
+    int score;
+    private int requiredTarget = 50;
+
+    [SerializeField] GameObject scoreCalculator;
+    [SerializeField] Transform scoreCalculatorPos;
     private void Awake()
     {
+        targetScoreText.text = "Target - 0/" + requiredTarget;
         copyList = availableUpgrades;
         wreckingBall = FindAnyObjectByType<WBall>();
+        Instantiate(scoreCalculator, scoreCalculatorPos);
     }
 
     void EnableUpgradeImageObjects()
@@ -56,6 +67,9 @@ public class GameManager : MonoBehaviour
     {
         hasUsed = false;
         DisableUpgradeImageObjects();
+        requiredTarget += 10;
+        targetScoreText.text = "Target - 0/" + requiredTarget;
+        Instantiate(scoreCalculator, scoreCalculatorPos);
         int index = Random.Range(0,towerPrefabs.Length);
         GameObject towerToSetNext = towerPrefabs[index];
         if(towerToSetNext != null)
@@ -68,9 +82,15 @@ public class GameManager : MonoBehaviour
     {
         hasUsed = true;
         wreckButton.SetActive(false);
-        EnableUpgradeImageObjects();
-        FindAndDestroyExistingTower();
-        
+        if(score<requiredTarget)
+        {
+            SceneManager.LoadScene("Game Over");
+        }
+        else
+        {
+            EnableUpgradeImageObjects();
+            FindAndDestroyExistingTower();
+        }
     }
 
     public void DelayUpgradeWindow()
@@ -87,9 +107,16 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate()
     {
         if(hasUsed)
-        {
+        { 
             wreckingBall.rb.linearVelocity = new Vector2(0, 0);
             wreckingBall.rb.angularVelocity = 0;
+            wreckingBall.rb.position= new Vector2(0,-1.59f);
         }
+    }
+
+    public void CalculateScore()
+    {
+        score = (int)(Mathf.Sqrt(Mathf.Pow(wreckingBall.rb.linearVelocity.magnitude,2) + Mathf.Pow(wreckingBall.rb.angularVelocity,2)));
+        targetScoreText.text = "Target - " + score.ToString() + "/" + requiredTarget;
     }
 }
